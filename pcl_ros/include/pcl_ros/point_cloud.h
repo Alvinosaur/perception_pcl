@@ -3,7 +3,7 @@
 
 #include <ros/ros.h>
 #include <pcl/point_cloud.h>
-#include <pcl/point_traits.h>
+#include <pcl/type_traits.h>
 #include <pcl/for_each_type.h>
 #include <pcl/conversions.h>
 #include <pcl_conversions/pcl_conversions.h>
@@ -228,7 +228,7 @@ namespace ros
           for (uint32_t row = 0; row < m.height; ++row) {
             const uint8_t* stream_data = stream.advance(row_step);
             for (uint32_t col = 0; col < m.width; ++col, stream_data += point_step) {
-              BOOST_FOREACH(const pcl::detail::FieldMapping& fm, mapping) {
+              for(const pcl::detail::FieldMapping& fm : mapping) {
                 memcpy(m_data + fm.struct_offset, stream_data + fm.serialized_offset, fm.size);
               }
               m_data += sizeof(T);
